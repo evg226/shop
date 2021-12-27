@@ -17,7 +17,7 @@ $query="UPDATE products SET
          WHERE id=$id";
 mysqli_query($connection, $query);
 
-echo mysqli_error($connection)?mysqli_error($connection): mysqli_affected_rows($connection);
+echo mysqli_error($connection)?sendError(mysqli_error($connection)): mysqli_affected_rows($connection);
 
 
 

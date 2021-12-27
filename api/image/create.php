@@ -25,7 +25,7 @@ foreach ($_FILES['galleryImages']['tmp_name'] as $key => $file) {
         $fileType = explode(".", $_FILES['galleryImages']['name'][$key])[1];
         $bigPath = "../../static/$key$fileName.$fileType";
         if (move_uploaded_file($file, $bigPath)) {
-            $query = "INSERT INTO images (path,product_id) VALUES('$bigPath',$productId)";
+            $query = "INSERT INTO images (path,product_id) VALUES('$key$fileName.$fileType',$productId)";
             mysqli_query($connection, $query);
             $responce[$_FILES['galleryImages']['name'][$key]]=mysqli_affected_rows($connection);
         }
