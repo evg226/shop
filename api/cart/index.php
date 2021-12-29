@@ -2,7 +2,8 @@
 require "../user/checkAuth.php";
 require_once "../db.php";
 
-$query="SELECT cart.*,products.name as productName,products.price as price,products.price*cart.quantity as total
+
+$query="SELECT cart.*,products.name as productName,products.price as price,products.price*cart.quantity as total,products.image as image
             FROM cart
             INNER JOIN products
                 ON products.id=cart.productId
@@ -10,7 +11,10 @@ $query="SELECT cart.*,products.name as productName,products.price as price,produ
 ";
 
 $result = mysqli_query($connection, $query);
-if (mysqli_error($connection)) die (mysqli_error($connection));
+if (mysqli_error($connection)) {
+    require_once("../error.php");
+    die (sendError(mysqli_error($connection)));
+}
 $cartRows=[];
 $cartQuantity=0;
 $cartTotal=0;

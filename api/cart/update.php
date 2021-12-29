@@ -13,7 +13,9 @@ $size=(string)htmlspecialchars(strip_tags($_POST["size"]));
         if(mysqli_query($connection, $query)) {
             echo mysqli_affected_rows($connection);
         } else {
-            echo mysqli_error($connection);
+            require_once("../error.php");
+            die (sendError(mysqli_error($connection)));
+
         }
     } else {
         $query = "UPDATE cart SET
@@ -24,7 +26,8 @@ $size=(string)htmlspecialchars(strip_tags($_POST["size"]));
         if (mysqli_query($connection, $query)) {
             echo mysqli_affected_rows($connection);
         } else {
-            $message = mysqli_error($query);
+            require_once("../error.php");
+            die (sendError(mysqli_error($connection)));
         }
     }
 

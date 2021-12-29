@@ -1,4 +1,11 @@
-import {CATEGORIES_LOAD_FULL, SET_ACTIVE_PRODUCT, SET_PRODUCTS_PAGE, setProductsPage, USER_SIGNIN} from "./action";
+import {
+    CATEGORIES_LOAD_FULL, MODIFY_CART, REMOVE_CART,
+    SET_ACTIVE_PRODUCT,
+    SET_CART,
+    SET_PRODUCTS_PAGE,
+    setProductsPage,
+    USER_SIGNIN
+} from "./action";
 
 export const reducerUser = (state = {}, action) => {
     switch (action.type) {
@@ -40,4 +47,37 @@ export const reducerCategories = (state = {}, action) => {
             return state
     }
 };
+
+export const reducerCart = (state={quantity:0},action)=>{
+    switch (action.type) {
+        case SET_CART:
+            return action.payload
+        case MODIFY_CART:
+            if (action.payload.quantity>0){
+                const newCart = {...state};
+                const item = newCart.rows.find(row => row.id === action.payload.id);
+                newCart.quantity = state.quantity + parseInt(action.payload.quantity) - item.quantity;
+                newCart.total = state.total + (parseInt(action.payload.quantity) - item.quantity) * item.price;
+                item.quantity = action.payload.quantity;
+                item.color = action.payload.color;
+                item.size = action.payload.size;
+                return newCart;
+            }
+            else {
+                return {
+                    quantity: state.quantity-action.payload.quantity,
+                    total:state.total-action.payload.quantity*action.payload.price,
+                    rows:state.rows.filter(row=>row.id !== action.payload.id)
+                }
+            }
+        case REMOVE_CART:{
+            return {
+                quantity: state.quantity-action.payload.quantity,
+                total:state.total-action.payload.quantity*action.payload.price,
+                rows:state.rows.filter(row=>row.id !== action.payload.id)
+            }
+        }
+        default:return state
+    }
+}
 

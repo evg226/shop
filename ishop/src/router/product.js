@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getActiveProduct, getProductsPage} from "../store/selectors";
-import {loadProduct} from "../store/action";
+import {addCartDB, loadProduct, modifyCartDB} from "../store/action";
 import {useParams} from "react-router";
 import {baseURL} from "../constants";
+import {Select} from "../components/selects";
 
 export const  Product = () => {
     const dispatch=useDispatch();
@@ -13,15 +14,16 @@ export const  Product = () => {
     const [activeImage,setActiveImage]=useState(0);
 
     const [quantity,setQuantity]=useState(1);
-    const colors=[
-        {id:1,name:"red"},{id:2,name:"blue"},{id:3,name:"green"},
-    ];
-    const sizes=[
-        {id:1,name:"XXL"},{id:2,name:"L"},{id:3,name:"XS"},
-    ];
+
     const [color,setColor]=useState("");
     const [size,setSize]=useState("");
 
+    const handleAddCart = (e)=>{
+        e.preventDefault();
+       const newItem = {productId:product.id, color, size, quantity,price:product.price};
+       dispatch(addCartDB(newItem));
+
+    }
 
     useEffect(()=>{
         dispatch(loadProduct(id));
@@ -57,25 +59,15 @@ export const  Product = () => {
                             <div className="product__price">{product.price}$</div>
                             <div className="product__line"></div>
                             <div className="product__choose">
-                                <select name="color" id="color" value={color} onChange={(e)=>setColor(e.target.value)}>
-                                    <option value="">Choose color</option>
-                                    {colors&&colors.map(item=>
-                                        <option key={item.id} value={item.name}>{item.name}</option>
-                                    )}
-                                </select>
-                                <select name="size" id="size" value={size} onChange={(e)=>setSize(e.target.value)}>
-                                    <option value="">Choose size</option>
-                                    {sizes&&sizes.map(item=>
-                                        <option key={item.id} value={item.name}>{item.name}</option>
-                                    )}
-                                </select>
+                                <Select name={"color"} onChange={setColor} value={color} />
+                                <Select name={"size"} onChange={setSize} value={size} />
                                     <input type="number" name="quantity"
                                        placeholder="quantity" id="quantity"
                                        value={quantity}
                                        onChange={(e)=>setQuantity(e.target.value)}
                                 />
                             </div>
-                            <button type="submit" className="product__button">
+                            <button onClick={handleAddCart} type="submit" className="product__button">
                                 <img src="img/cart-red.svg" alt="" />
                                 Add to Cart</button>
                         </div>

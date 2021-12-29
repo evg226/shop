@@ -14,3 +14,4 @@ export const getCategoriesFull=state=>state.categories;
 export const getProductsPage=state=>state.productsPage;
 export const getActiveProduct=state=>state.activeProduct;
 export const getActiveUser=state=>state.user;
+export const getCart=state=>state.cart;

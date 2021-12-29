@@ -9,5 +9,7 @@ $query = "DELETE FROM cart WHERE id=$id and userId=$userId";
 if(mysqli_query($connection, $query)) {
     echo mysqli_affected_rows($connection);
 } else {
-    echo mysqli_error($connection);
+    require_once("../error.php");
+    die (sendError(mysqli_error($connection)));
+
 }

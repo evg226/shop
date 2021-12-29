@@ -28,7 +28,9 @@ if($data['id']) {
     if (mysqli_query($connection, $query)) {
         echo mysqli_affected_rows($connection);
     } else {
-        $message = mysqli_error($query);
+        require_once("../error.php");
+        die (sendError(mysqli_error($connection)));
+
     }
 } else {
     if (!$quantity) $quantity = 1;
@@ -36,6 +38,8 @@ if($data['id']) {
     if (mysqli_query($connection, $query)) {
         echo mysqli_insert_id($connection);
     } else {
-        echo mysqli_error($connection);
+        require_once("../error.php");
+        die (sendError(mysqli_error($connection)));
+
     }
 }

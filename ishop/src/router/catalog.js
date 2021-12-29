@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {shallowEqual, useDispatch,useSelector} from "react-redux";
-import {loadProductsPage} from "../store/action";
+import {addCartDB,loadProductsPage} from "../store/action";
 import {getProductsPage} from "../store/selectors";
 import {baseURL} from "../constants";
 import {useNavigate, useParams} from "react-router";
@@ -198,6 +198,12 @@ export const  Catalog = () => {
 
 export const CatalogItem= ({item})=>{
     const navigate=useNavigate();
+    const dispatch=useDispatch();
+
+    const handleAddCart = () => {
+
+        dispatch(addCartDB({productId:item.id}));
+    }
     return (
         <div key={item.id} className="featured__item">
             <a onClick={()=>navigate(PRODUCT_ROUTE+"/"+item.id)} className="featured__item-link">
@@ -217,7 +223,7 @@ export const CatalogItem= ({item})=>{
                 </div>
             </a>
             <div className="featured__item_add">
-                <a href="engine/cartactions.php?action=add&productId=<?=$data['id']?>"
+                <a onClick={handleAddCart}
                    className="featured__item_add-link">
                     Add to Cart
                 </a>
