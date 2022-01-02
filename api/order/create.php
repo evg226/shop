@@ -1,6 +1,7 @@
 <?php
 require "../user/checkAuth.php";
 require_once "../db.php";
+require_once("../error.php");
 
 $address=(string)htmlspecialchars(strip_tags($_POST["address"]));
 $status="created";
@@ -19,12 +20,12 @@ $queryDeleteCart="
 
 mysqli_query($connection, $queryInsertOrder);
 if (mysqli_error($connection)) {
-    echo "insertOrderErr: ".mysqli_error($connection);
+    die (sendError(mysqli_error($connection)));
 } else{
     mysqli_query($connection, $queryDeleteCart);
     if (mysqli_error($connection)) {
-        echo "DelCartErr: ".mysqli_error($connection);
         mysqli_query($connection,'ROLLBACK');
+        die (sendError(mysqli_error($connection)));
     } else {
         $rows=mysqli_affected_rows($connection);
         mysqli_query($connection,'COMMIT');

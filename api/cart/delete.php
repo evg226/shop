@@ -3,7 +3,6 @@ require "../user/checkAuth.php";
 require_once "../db.php";
 
 $id=(int)htmlspecialchars(strip_tags($_POST["id"]));
-
 $query = "DELETE FROM cart WHERE id=$id and userId=$userId";
 
 if(mysqli_query($connection, $query)) {

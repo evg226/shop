@@ -1,7 +1,7 @@
 import {
     CATEGORIES_LOAD_FULL, MODIFY_CART, REMOVE_CART,
     SET_ACTIVE_PRODUCT,
-    SET_CART,
+    SET_CART, SET_ORDER,
     SET_PRODUCTS_PAGE,
     setProductsPage,
     USER_SIGNIN
@@ -81,3 +81,12 @@ export const reducerCart = (state={quantity:0},action)=>{
     }
 }
 
+
+export const reducerOrder = (state={},action)=>{
+    switch (action.type){
+        case SET_ORDER:
+            return action.payload
+        default:
+            return  state
+    }
+}

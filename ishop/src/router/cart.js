@@ -6,14 +6,25 @@ import {baseURL} from "../constants";
 import {PRODUCT_ROUTE} from "../constants";
 import {useNavigate} from "react-router";
 import {Select} from "../components/selects";
-import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
-import {modifyCartDB, removeCart} from "../store/action";
+import {addOrderDB, modifyCartDB, removeCart, removeCartDB} from "../store/action";
 
 export const  Cart = () => {
     const navigate=useNavigate();
     const cart=useSelector(getCart,shallowEqual);
-
+    const dispatch=useDispatch();
     const cartRows=cart.rows;
+
+    const [country,setCountry]=useState("");
+    const [state,setState]=useState("");
+    const [postcode,setPostcode]=useState("");
+
+    const hahdleMakeOrder = ()=>{
+        if (country&&state) {
+            const address = `${country}, ${state}, ${postcode}`;
+            dispatch(addOrderDB(address));
+        }
+    }
+
     return (
         // <div >
         //     <h2>Корзина</h2>
@@ -36,16 +47,16 @@ export const  Cart = () => {
                                 <h2 className="cartbox__header">
                                     Shipping Address
                                 </h2>
-                                <input className="cartbox__input" type="text" placeholder="Country" />
-                                <input className="cartbox__input" type="text" placeholder="State" />
-                                <input className="cartbox__input" type="tel" placeholder="postcode" />
+                                <input className="cartbox__input" type="text" placeholder="Country" value={country} onChange={(e)=>setCountry(e.target.value)} />
+                                <input className="cartbox__input" type="text" placeholder="State" value={state} onChange={(e)=>setState(e.target.value)} />s
+                                <input className="cartbox__input" type="tel" placeholder="postcode" value={postcode} onChange={(e)=>setPostcode(e.target.value)} />
                                 <a className="cartbox__button cartbox__button_shipping">get a quote</a>
                             </div>
                             <div className="cartbox__proseed">
                                 <p className="cartbox__proseed-text-sub">Sub total <span>{cart.quantity} pieces</span></p>
                                 <p className="cartbox__proseed-text-grand">Grand total <span>{cart.total}$</span></p>
                                 <div className="cartbox__proseed-line"></div>
-                                <button className="cartbox__proseed-button">Proseed</button>
+                                <button className="cartbox__proseed-button" onClick={hahdleMakeOrder}>Proseed</button>
                             </div>
 
                         </div>
@@ -73,7 +84,7 @@ const CartItem =({item})=>{
     const handleDelete = (e) => {
         e.preventDefault();
         const removeItem = {id: item.id, quantity,price:item.price};
-        dispatch(removeCart(removeItem));
+        dispatch(removeCartDB(removeItem));
     }
 
     return (
