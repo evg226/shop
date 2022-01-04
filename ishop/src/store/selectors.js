@@ -15,3 +15,4 @@ export const getProductsPage=state=>state.productsPage;
 export const getActiveProduct=state=>state.activeProduct;
 export const getActiveUser=state=>state.user;
 export const getCart=state=>state.cart;
+export const getOrders=state=>state.order;

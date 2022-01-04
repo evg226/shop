@@ -1,6 +1,6 @@
 import {ADMIN_ROUTE, CART_DESK, DESK_ROUTE, ORDER_DESK, PRODUCT_ROUTE, USER_ROUTE} from "../constants";
 import {Cart} from "./cart";
-import {Orders} from "./orders";
+import {Orders} from "../components/orders";
 import {User} from "./user";
 import {Desk} from "./desk";
 import {Catalog} from "./catalog";

@@ -123,6 +123,7 @@ export const userSignOutQuery=()=>async dispatch =>{
         await signout();
         dispatch(userSignin(""));
         dispatch(setCart({quantity:0}));
+        dispatch(setOrder({}))
     } catch (e) {
         console.log(e.message);
         console.log(e.response.data);
