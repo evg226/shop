@@ -1,4 +1,5 @@
 import {
+    CANCEL_ORDER,
     CATEGORIES_LOAD_FULL, MODIFY_CART, REMOVE_CART,
     SET_ACTIVE_PRODUCT,
     SET_CART, SET_ORDER,
@@ -86,7 +87,19 @@ export const reducerOrder = (state={},action)=>{
     switch (action.type){
         case SET_ORDER:
             return action.payload
+        case CANCEL_ORDER:
+            console.log(action.payload.orderDate);
+            const newOrder=state[action.payload.orderDate].find(item=>item.id==action.payload.order.id);
+            const oldOrders=state[action.payload.orderDate].filter(item=>item.id!=action.payload.order.id);
+            newOrder.status="cancelled";
+            console.log(newOrder)
+            return {
+                ...state,
+                [action.payload.orderDate]:[
+                    ...oldOrders,newOrder
+                ]
+            }
         default:
-            return  state
+            return state
     }
 }

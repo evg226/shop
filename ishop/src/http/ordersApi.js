@@ -18,3 +18,10 @@ export const createOrder=async(address)=>{
     const responce=await $host.post("api/order/create.php",getFormData(address));
     return responce.data;
 }
+
+export const cancelOrderById=async(id)=>{
+    const responce=await $host.post("api/order/cancel.php",getFormData({id}));
+    return responce.data;
+}
+
+

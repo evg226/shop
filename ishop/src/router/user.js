@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getActiveUser, getOrders} from "../store/selectors";
 import {useNavigate, useParams} from "react-router";
-import {USER_ROUTE,PRODUCT_ROUTE} from "../constants";
+import {USER_ROUTE, PRODUCT_ROUTE, ADMIN_ROUTE} from "../constants";
 import {userSigninQuery, userSignOutQuery} from "../store/action";
 import {Orders} from "../components/orders";
 
@@ -87,9 +87,15 @@ export const  User = () => {
 
                                 {activeUser.login && action!=='signup' &&
                                     <span className={"buttons"}>
-                                    <a onClick={()=>navigate(PRODUCT_ROUTE)} className='signup__button signup__button-out '>Start
-                                        shopping</a>
-                                    <a name='signout' onClick={()=>dispatch(userSignOutQuery())}
+                                        {
+                                            activeUser.role === "ADMIN" ?
+                                                <a onClick={() => navigate(ADMIN_ROUTE)}
+                                                   className='signup__button signup__button-out '>Admin panel</a>
+                                                :
+                                                <a onClick={()=>navigate(PRODUCT_ROUTE)}
+                                                   className='signup__button signup__button-out '>Start shopping</a>
+                                        }
+                                        <a name='signout' onClick={()=>dispatch(userSignOutQuery())}
                                             className='signup__button signup__button-out '>Sign out</a>
                                         </span>
                                 }

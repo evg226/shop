@@ -2,7 +2,7 @@ import {signin, signout} from "../http/user";
 import {fetchProductsPage,fetchProduct} from "../http/productsApi";
 import {fetchCategories} from "../http/categoriesApi";
 import {createCart, deleteCart, fetchCart, updateCart} from "../http/cartApi";
-import {createOrder, fetchOrder} from "../http/ordersApi";
+import {cancelOrderById, createOrder, fetchOrder} from "../http/ordersApi";
 
 
 export const CATEGORIES_LOAD_FULL="CATEGORIES::LOAD_FULL";
@@ -196,6 +196,27 @@ export const addOrderDB=(address)=>async dispatch=>{
             dispatch(loadOrder(order));
             dispatch(loadCart());
         }
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+
+export const CANCEL_ORDER="ORDER::CANCEL";
+
+export const  cancelOrder=(order,orderDate)=>{
+    return {
+        type:CANCEL_ORDER,
+        payload:{order,orderDate}
+    }
+}
+
+export const cancelOrderDB = (order,orderDate) => async dispatch => {
+    try {
+        const orderResponce = await cancelOrderById(order.id);
+        console.log(orderResponce);
+        dispatch(cancelOrder(order,orderDate));
     } catch (e) {
         console.log(e.message);
         console.log(e.response.data);

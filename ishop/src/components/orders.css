@@ -14,7 +14,7 @@
 .order__items{
     font-size:12px;
     display: grid;
-    grid-template-columns: auto minmax(auto,150px) repeat(5,auto) ;
+    grid-template-columns: auto 20px minmax(auto,150px) repeat(5,auto) ;
     margin: 0 0 10px 0;
     border : 1px solid #9f9f9f;
     cursor: pointer;
@@ -30,7 +30,8 @@
     margin-bottom: -1px;
 }
 
-.order__items:hover {
-    transform: scale(1.05);
+.order__item:hover {
+    background: #9f9f9f;
 }
+
 
