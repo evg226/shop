@@ -9,7 +9,7 @@ import {AppNavbar} from "./router/appNavbar";
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
-    dispatch(userSigninQuery("user@user.ru","1"));
+    dispatch(userSigninQuery("admin","1"));
     dispatch(loadFullCategories());
   })
 

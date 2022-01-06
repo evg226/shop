@@ -1,6 +1,12 @@
 import {signin, signout} from "../http/user";
 import {fetchProductsPage,fetchProduct} from "../http/productsApi";
-import {fetchCategories} from "../http/categoriesApi";
+import {
+    createCategoryQuery,
+    createCollectionQuery, deleteCategoryQuery, deleteCCategoryQuery,
+    deleteCollectionQuery,
+    fetchCategories, updateCategoryQuery,
+    updateCollectionQuery
+} from "../http/categoriesApi";
 import {createCart, deleteCart, fetchCart, updateCart} from "../http/cartApi";
 import {cancelOrderById, createOrder, fetchOrder} from "../http/ordersApi";
 
@@ -202,21 +208,133 @@ export const addOrderDB=(address)=>async dispatch=>{
     }
 }
 
+export const SET_STATUS_ORDER="ORDER::SET_STATUS";
 
-export const CANCEL_ORDER="ORDER::CANCEL";
-
-export const  cancelOrder=(order,orderDate)=>{
+export const  setStatusOrder=(order,orderDate,status)=>{
     return {
-        type:CANCEL_ORDER,
-        payload:{order,orderDate}
+        type:SET_STATUS_ORDER,
+        payload:{order,orderDate,status}
     }
 }
 
-export const cancelOrderDB = (order,orderDate) => async dispatch => {
+export const setStatusOrderDB = (order,orderDate,status) => async dispatch => {
     try {
-        const orderResponce = await cancelOrderById(order.id);
-        console.log(orderResponce);
-        dispatch(cancelOrder(order,orderDate));
+        const orderResponce = await cancelOrderById(order.id,status);
+        orderResponce && dispatch(setStatusOrder(order,orderDate,status));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const UPDATE_COLLECTION="COLLECTION:UPDATE";
+
+export const  updateCollection=(id,newName)=>{
+    return {
+        type:UPDATE_COLLECTION,
+        payload: {id, newName}
+    }
+}
+
+export const updateCollectionDB = (id,newName) => async dispatch => {
+    try {
+        const response = await updateCollectionQuery(id,newName);
+        response && dispatch(updateCollection(id,newName));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const DELETE_COLLECTION="COLLECTION:DELETE";
+
+export const  deleteCollection=(id)=>{
+    return {
+        type:DELETE_COLLECTION,
+        payload: id
+    }
+}
+
+export const deleteCollectionDB = (id) => async dispatch => {
+    try {
+        const response = await deleteCollectionQuery(id);
+        response && dispatch(deleteCollection(id));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const CREATE_COLLECTION="COLLECTION:CREATE";
+
+export const  createCollection=(id,name)=>{
+    return {
+        type:CREATE_COLLECTION,
+        payload: {id, name}
+    }
+}
+
+export const createCollectionDB = (name) => async dispatch => {
+    try {
+        const response = await createCollectionQuery(name);
+        response && dispatch(createCollection(response,name));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const CREATE_CATEGORY="CATEGORY:CREATE";
+
+export const  createCategory=(id,name,collectionId)=>{
+    return {
+        type:CREATE_CATEGORY,
+        payload: {id, name,collectionId}
+    }
+}
+
+export const createCategoryDB = (name,collectionId) => async dispatch => {
+    try {
+        const response = await createCategoryQuery(name,collectionId);
+        response && dispatch(createCategory(response,name,collectionId));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const DELETE_CATEGORY="CATEGORY:DELETE";
+
+export const  deleteCategory=(id,collectionId)=>{
+    return {
+        type:DELETE_CATEGORY,
+        payload: {id, collectionId}
+    }
+}
+
+export const deleteCategoryDB = (id,collectionId) => async dispatch => {
+    try {
+        const response = await deleteCategoryQuery(id,collectionId);
+        response && dispatch(deleteCategory(id,collectionId));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const UPDATE_CATEGORY="COLLECTION:CATEGORY";
+
+export const  updateCategory=(id,newName,collectionId)=>{
+    return {
+        type:UPDATE_CATEGORY,
+        payload: {id, newName,collectionId}
+    }
+}
+
+export const updateCategoryDB = (id,newName,collectionId) => async dispatch => {
+    try {
+        const response = await updateCategoryQuery(id,newName,collectionId);
+        response && dispatch(updateCategory(id,newName,collectionId));
     } catch (e) {
         console.log(e.message);
         console.log(e.response.data);

@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import "./admin.css";
-import AdminOrders from "../components/AdminOrders";
-export const  Admin = () => {
+import {AdmCollection} from "../components/admCollection";
 
+import {AdmProducts} from "../components/admProduct";
+
+export const  Admin = () => {
     const actions=[
-        {id:1,name:"Orders",Component:<AdminOrders />},
-        {id:2,name:"Product collections"},
-        {id:3,name:"Product categories"},
-        {id:4,name:"Products"},
+        {id:1,name:"Collections & categories",Component:<AdmCollection />},
+        // {id:2,name:"Product categories",Component:<AdmCategories />},
+        {id:2,name:"Products",Component:<AdmProducts />},
     ];
     const [activeAction,setActiveAction]=useState(actions[0]);
     return (

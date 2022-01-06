@@ -15,13 +15,18 @@ export const fetchOrder = async () =>{
 // }
 
 export const createOrder=async(address)=>{
-    const responce=await $host.post("api/order/create.php",getFormData(address));
-    return responce.data;
+    const response=await $host.post("api/order/create.php",getFormData(address));
+    return response.data;
 }
 
-export const cancelOrderById=async(id)=>{
-    const responce=await $host.post("api/order/cancel.php",getFormData({id}));
-    return responce.data;
+export const cancelOrderById=async(id,status)=>{
+    let response;
+    if (status==="cancelled") {
+        response = await $host.post("api/order/cancel.php", getFormData({id}));
+    } else {
+        response = await $host.post("api/order/changestatus.php", getFormData({id,status}));
+    }
+    return response.data;
 }
 
 
