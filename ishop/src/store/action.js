@@ -1,5 +1,5 @@
 import {signin, signout} from "../http/user";
-import {fetchProductsPage,fetchProduct} from "../http/productsApi";
+import {fetchProductsPage, fetchProduct, fetchProductsByCategory} from "../http/productsApi";
 import {
     createCategoryQuery,
     createCollectionQuery, deleteCategoryQuery, deleteCCategoryQuery,
@@ -146,10 +146,30 @@ export const setProductsPage=(productsPage)=>{
     }
 }
 
-export const loadProductsPage=(page,limit)=>async dispatch =>{
+export const loadProductsPage=(page,limit,collectionId,categoryId)=>async dispatch =>{
     try {
-        const productsPage = await fetchProductsPage(page,limit);
+        const productsPage = await fetchProductsPage(page,limit, collectionId,categoryId);
         dispatch(setProductsPage(productsPage));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const SET_PRODUCTS_BY_CATEGORY="PRODUCTS::SET_BY_CATEGORY";
+
+export const setProductsByCategory=(products)=>{
+    return {
+        type:SET_PRODUCTS_BY_CATEGORY,
+        payload:products
+    }
+}
+
+export const loadProductsByCategory=(categoryId)=>async dispatch =>{
+    try {
+
+        const products = await fetchProductsByCategory(categoryId);
+        dispatch(setProductsByCategory(products));
     } catch (e) {
         console.log(e.message);
         console.log(e.response.data);

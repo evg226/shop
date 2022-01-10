@@ -7,3 +7,4 @@ export const PRODUCT_ROUTE = "/product";
 export const FEEDBACK_ROUTE = "/feedback";
 
 export const baseURL='http://localhost/';
+export const staticFiles='http://localhost/static/';

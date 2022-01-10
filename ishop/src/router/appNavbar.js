@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router';
 
 
 import {DESK_ROUTE,CART_DESK,USER_ROUTE,PRODUCT_ROUTE} from "../constants";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {loadFullCategories} from "../store/action";
 import {getCart, getCategoriesFull} from "../store/selectors";
+import {loadProductsPage} from "../store/action";
 
 export const AppNavbar = () => {
-    const isAuthed = true;
+    // const isAuthed = true;
     const navigate = useNavigate();
 
     const cartQuantity=useSelector(getCart,shallowEqual).quantity;
@@ -19,11 +19,11 @@ export const AppNavbar = () => {
 
 
     const handleClickSignin = () => {
-        if (!isAuthed) {
+        // if (!isAuthed) {
             navigate(USER_ROUTE);
-        } else {
-            navigate(DESK_ROUTE);
-        }
+        // } else {
+        //     navigate(DESK_ROUTE);
+        // }
     }
 
     const [hamb, setHamb] = useState(false);
@@ -31,8 +31,11 @@ export const AppNavbar = () => {
         setHamb(!hamb);
     }
 
-    const handleClickCategory=(category)=>{
-        
+    const handleClickItem=(filter)=>{
+
+        setHamb(false);
+        dispatch(loadProductsPage(1,4,filter.collectionId,filter.categoryId));
+        navigate(PRODUCT_ROUTE);
     }
 
     return (
@@ -43,16 +46,16 @@ export const AppNavbar = () => {
                         <img src="../img/close.svg" alt="Close"/></a>
                 </li>
                 <li className="subnav__item">
-                    <a onClick={handleMenuToogle} className="subnav__link subnav__link-gr subnav__link-menu">HOME</a>
+                    <a onClick={()=>handleClickItem({})} className="subnav__link subnav__link-gr subnav__link-menu">ALL</a>
                 </li>
 
                 {hamb&&collectionsNav.length&&collectionsNav.map(collection=>
                     <React.Fragment key={collection.id}>
-                        <li className='subnav__item'><a onClick={()=>navigate(PRODUCT_ROUTE)}
+                        <li className='subnav__item'><a onClick={()=>handleClickItem({collectionId:collection.id})}
                                                         className='subnav__link subnav__link-gr'>{collection.name}</a></li>
 
                         {collection.categories.length&&collection.categories.map(category=>
-                            <li key={category.id} className='subnav__item'><a onClick={()=>navigate(PRODUCT_ROUTE)}
+                            <li key={category.id} className='subnav__item'><a onClick={()=>handleClickItem({categoryId: category.id})}
                                                             className='subnav__link'>{category.name}</a></li>
                         )}
 

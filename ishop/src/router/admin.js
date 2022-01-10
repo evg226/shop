@@ -8,7 +8,7 @@ export const  Admin = () => {
     const actions=[
         {id:1,name:"Collections & categories",Component:<AdmCollection />},
         // {id:2,name:"Product categories",Component:<AdmCategories />},
-        {id:2,name:"Products",Component:<AdmProducts />},
+        {id:2,name:"Products",Component:<AdmCollection />},
     ];
     const [activeAction,setActiveAction]=useState(actions[0]);
     return (

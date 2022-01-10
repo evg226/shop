@@ -58,8 +58,8 @@ export const  Product = () => {
                             <p className="product__text">{product.description}</p>
                             <div className="product__price">{product.price}$</div>
                             <div className="product__line"></div>
-                            <div className="product__choose">
-                                <Select name={"color"} onChange={setColor} value={color} />
+                            <div className="product__choose" style={{display:"flex"}}>
+                                <Select name={"color"} onChange={setColor} value={color} theme={{height:"100%"}} />
                                 <Select name={"size"} onChange={setSize} value={size} />
                                     <input type="number" name="quantity"
                                        placeholder="quantity" id="quantity"

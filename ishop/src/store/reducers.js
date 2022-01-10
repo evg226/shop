@@ -8,7 +8,7 @@ import {
     REMOVE_CART,
     SET_ACTIVE_PRODUCT,
     SET_CART,
-    SET_ORDER,
+    SET_ORDER, SET_PRODUCTS_BY_CATEGORY,
     SET_PRODUCTS_PAGE,
     SET_STATUS_ORDER,
     setProductsPage, UPDATE_CATEGORY,
@@ -33,6 +33,11 @@ export const reducerProducts = (state = {}, action) => {
             return {
                 ...state,
                 activeProduct:action.payload
+            }
+        case SET_PRODUCTS_BY_CATEGORY:
+            return {
+                ...state,
+                adminProducts:action.payload
             }
         default:
             return state

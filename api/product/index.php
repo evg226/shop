@@ -1,6 +1,18 @@
 <?php
 require_once "../db.php";
-if( isset($_GET['id'])){
+require_once "../error.php";
+
+if( isset($_GET['categoryId'])&&$_GET['cat']==1) {
+    $categoryId = (int)htmlspecialchars(strip_tags($_GET['categoryId']));
+    $query = "SELECT * FROM products WHERE category_id=$categoryId";
+    $result = mysqli_query($connection, $query);
+    if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
+    $products = [];
+    while ($data = mysqli_fetch_assoc($result)) {
+        array_push($products, $data);
+    }
+    echo json_encode($products);
+} else if( isset($_GET['id'])){
 //    echo "Запрос по id";
     $id=(int)htmlspecialchars(strip_tags($_GET['id']));
     $query="SELECT
@@ -28,35 +40,48 @@ if( isset($_GET['id'])){
     }
     $product['images']=$images;
      echo json_encode($product);
-} else {
+}else {
 //    echo "Запрос всех продуктов";
     $page=isset($_GET['page'])?(int)htmlspecialchars(strip_tags($_GET['page'])):1;
     $limit=isset($_GET['limit'])?(int)htmlspecialchars(strip_tags($_GET['limit'])):4;
+    $categoryId=(int)htmlspecialchars(strip_tags($_GET['categoryId']));
+    $collectionId=(int)htmlspecialchars(strip_tags($_GET['collectionId']));
+
     $startRecord=($page-1)*$limit;
-    $query="SELECT * FROM products LIMIT $startRecord,$limit";
-    $result = mysqli_query($connection, $query);
-    $err1=mysqli_error($connection);
+    $query="SELECT products.*,categories.collection_id FROM products
+        INNER JOIN categories
+            ON products.category_id=categories.id";
+    $queryEnd="";
+    if ($collectionId!=0) {
+        $queryEnd.=" WHERE collection_id=$collectionId";
+    }else if ($categoryId!=0) {
+        $queryEnd.=" WHERE category_id=$categoryId";
+    }
+    $result = mysqli_query($connection, $query.$queryEnd." LIMIT $startRecord,$limit");
+    if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
     $products=[];
     while($data = mysqli_fetch_assoc($result)){
         array_push($products,$data);
     }
 
-    $query="SELECT count(*) as count FROM products ";
-
+    $query="SELECT count(products.id) as count FROM products
+        INNER JOIN categories ON products.category_id=categories.id".$queryEnd;
     $result = mysqli_query($connection, $query);
-    $err2=mysqli_error($connection);
+    if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
     $data = mysqli_fetch_assoc($result);
-    if ($err1||$err2 ) {
-        echo $err1."; ".$err2;
-    } else {
-        $responce=[
-            "count"=>$data["count"],
+    $response=[
+            "count"=>(int)$data["count"],
             "page"=>$page,
             "limit"=>$limit,
             "products"=>$products
         ];
-        echo json_encode($responce);
+    if ($collectionId!=0) {
+        $response["collectionId"]=$collectionId;
+    }else if ($categoryId!=0) {
+        $response["categoryId"]=$categoryId;
     }
+    echo json_encode($response);
+
 
 
 }

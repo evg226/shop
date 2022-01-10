@@ -12,12 +12,21 @@ export const  Catalog = () => {
     const productsCount=productsPage.count;
     const activePage=productsPage.page;
     const limit=productsPage.limit;
-    const products =productsPage.products;
+    const products = productsPage.products;
 
+    const pagesCount= Math.ceil(productsCount/limit);
+    const pages=[];
+    for (let i=1;i<=pagesCount;i++) pages.push(i);
 
-    useEffect(()=>{
-        dispatch(loadProductsPage(1,4));
-    },[]);
+    const handleChangePage=(page)=>{
+        let current=page;
+        if (page<1) {
+            current = pagesCount
+        } else if (page>pagesCount){
+            current=1;
+        }
+        dispatch(loadProductsPage(current,4,productsPage.collectionId,productsPage.categoryId));
+    }
 
     return (
         <main>
@@ -132,15 +141,13 @@ export const  Catalog = () => {
 
                     <div className="pages">
                         <div className="pages__content">
-                            <a href="#" className="pages__link pages__link_browse">&lt;</a>
-                            <a href="#" className="pages__link pages__link_active">1</a>
-                            <a href="#" className="pages__link">2</a>
-                            <a href="#" className="pages__link">3</a>
-                            <a href="#" className="pages__link">4</a>
-                            <a href="#" className="pages__link">5</a>
-                            <a href="#" className="pages__link">6</a>
-                            <a href="#" className="pages__link pages__link_last">20</a>
-                            <a href="#" className="pages__link pages__link_browse">&gt;</a>
+                            <a onClick={()=>handleChangePage(activePage-1)} className="pages__link pages__link_browse">&lt;</a>
+                            {pagesCount&&pages.map(item=>
+                                <a key={item} className={"pages__link"+(activePage===item?" pages__link_active":"")}
+                                   onClick={()=>handleChangePage(item)}>{item}</a>
+                            )}
+                            <a className="pages__link pages__link_browse"
+                               onClick={()=>handleChangePage(activePage+1)}>&gt;</a>
                         </div>
                     </div>
 

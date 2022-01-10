@@ -10,7 +10,7 @@ export const  Orders = ({orders}) => {
             <h2 className="orders__caption">Orders</h2>
             {
                 Object.keys(orders).map(id=>
-                    <Order key={id} id={id} order={orders[id]} />
+                    <Order key={id} id={id} order={orders[id]}  />
                 )
             }
         </div>
@@ -18,10 +18,9 @@ export const  Orders = ({orders}) => {
 }
 
 const Order = ({id,order})=>{
-
     return (
         <>
-            <h4 className="order__caption">Order number: {id}</h4>
+            <h4 className="order__caption">{id} </h4>
             <div className="order__items">
                 <span>status</span>
                 <span>X</span>

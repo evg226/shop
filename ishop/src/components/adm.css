@@ -11,6 +11,10 @@
     margin-bottom: -1px;
     cursor: pointer;
 }
+
+.adm__row_products {
+    grid-template-columns: 20px 50px auto 50px 20px ;
+}
 .adm__row_data:hover{
     background: #e3e2e2;
 }
@@ -45,6 +49,7 @@
     background: rgba(0, 0, 0, 0.1);
 }
 .adm__modal {
+    max-width: 400px;
     position: fixed;
     z-index: 1000;
     left: 50%;
@@ -56,6 +61,17 @@
     background: #ffffff;
     transform: translate(-50%, -50%)
 }
+
+.adm__modal_products img {
+    width: 100%;
+    padding: 20px
+}
+
+.adm__modal_products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 .adm__modal h3{
     text-align: center;
     padding: 10px 0 ;
@@ -65,7 +81,7 @@
 .adm__modal p {
     margin: 10px;
 }
-.adm__modal input {
+.adm__modal input,select {
     margin: 0 10px;
 }
 .adm__modal_buttons{
@@ -108,3 +124,19 @@
     background: #ffffff;
 }
 
+.adm__modal_products input,select,textarea  {
+    width:60%;
+    padding: 5px 10px ;
+    margin: 5px 10px;
+    background: inherit;
+    border: 1px solid #9f9f9f;
+    font-size: 14px;
+    text-transform: none;
+    color: #6f6e6e;
+}
+
+.adm__modal_products p{
+    font-size: 15px;
+    text-transform: none;
+    color: #6f6e6e;
+}
