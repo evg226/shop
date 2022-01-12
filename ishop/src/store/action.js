@@ -1,5 +1,11 @@
 import {signin, signout} from "../http/user";
-import {fetchProductsPage, fetchProduct, fetchProductsByCategory} from "../http/productsApi";
+import {
+    fetchProductsPage,
+    fetchProduct,
+    fetchProductsByCategory,
+    updateProductsQuery,
+    createProductsQuery, deleteProductsQuery
+} from "../http/productsApi";
 import {
     createCategoryQuery,
     createCollectionQuery, deleteCategoryQuery, deleteCCategoryQuery,
@@ -9,6 +15,7 @@ import {
 } from "../http/categoriesApi";
 import {createCart, deleteCart, fetchCart, updateCart} from "../http/cartApi";
 import {cancelOrderById, createOrder, fetchOrder} from "../http/ordersApi";
+import {createImageQuery, deleteImageQuery, fetchImagQuery} from "../http/imagesAPI";
 
 
 export const CATEGORIES_LOAD_FULL="CATEGORIES::LOAD_FULL";
@@ -195,6 +202,64 @@ export const loadProduct=(id)=>async dispatch =>{
     }
 }
 
+export const UPDATE_PRODUCT="PRODUCTS:UPDATE";
+
+export const  updateProduct=(product)=>{
+    return {
+        type:UPDATE_PRODUCT,
+        payload: product
+    }
+}
+
+export const updateProductDB = (product) => async dispatch => {
+    try {
+        const newProduct = await updateProductsQuery(product);
+        newProduct && dispatch(updateProduct(newProduct));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const CREATE_PRODUCT="PRODUCTS:CREATE";
+
+export const createProduct=(product)=>{
+    return {
+        type:CREATE_PRODUCT,
+        payload: product
+    }
+}
+
+export const createProductDB = (product) => async dispatch => {
+    try {
+        const newProduct = await createProductsQuery(product);
+        newProduct && dispatch(createProduct(newProduct));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+
+export const DELETE_PRODUCT="PRODUCTS:DELETE";
+
+export const deleteProduct=(id)=>{
+    return {
+        type:DELETE_PRODUCT,
+        payload: id
+    }
+}
+
+export const deleteProductDB = (id) => async dispatch => {
+    try {
+        const response = await deleteProductsQuery(id);
+        response && dispatch(deleteProduct(id));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
 export const SET_ORDER="ORDER::SET";
 
 export const  setOrder=(order)=>{
@@ -355,6 +420,63 @@ export const updateCategoryDB = (id,newName,collectionId) => async dispatch => {
     try {
         const response = await updateCategoryQuery(id,newName,collectionId);
         response && dispatch(updateCategory(id,newName,collectionId));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const LOAD_IMAGES="IMAGES:LOAD";
+
+export const  loadImages=(images)=>{
+    return {
+        type:LOAD_IMAGES,
+        payload: images
+    }
+}
+
+export const loadImagesDB = (productId) => async dispatch => {
+    try {
+        const images = await fetchImagQuery(productId);
+        images && dispatch(loadImages(images));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const CREATE_IMAGES="IMAGES:CREATE";
+
+export const  createImages=(images)=>{
+    return {
+        type:CREATE_IMAGES,
+        payload: images
+    }
+}
+
+export const createImagesDB = (productId,galleryImage) => async dispatch => {
+    try {
+        const image = await createImageQuery({galleryImage, productId});
+        image && dispatch(createImages(image));
+    } catch (e) {
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
+export const DELETE_IMAGES="IMAGES:DELETE";
+
+export const  deleteImages=(id)=>{
+    return {
+        type:DELETE_IMAGES,
+        payload: id
+    }
+}
+
+export const deleteImagesDB = (id) => async dispatch => {
+    try {
+        const response = await deleteImageQuery({id});
+        response && dispatch(deleteImages(id));
     } catch (e) {
         console.log(e.message);
         console.log(e.response.data);

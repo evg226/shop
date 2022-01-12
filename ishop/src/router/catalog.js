@@ -25,7 +25,7 @@ export const  Catalog = () => {
         } else if (page>pagesCount){
             current=1;
         }
-        dispatch(loadProductsPage(current,4,productsPage.collectionId,productsPage.categoryId));
+        dispatch(loadProductsPage(current,limit,productsPage.collectionId,productsPage.categoryId));
     }
 
     return (

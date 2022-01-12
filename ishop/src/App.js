@@ -5,13 +5,14 @@ import {useEffect} from "react";
 import {BrowserRouter} from "react-router-dom";
 import {AppRouter} from "./router";
 import {AppNavbar} from "./router/appNavbar";
+import {useLocation} from "react-router";
 
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
-    dispatch(userSigninQuery("admin","1"));
+    // dispatch(userSigninQuery("admin","1"));
     dispatch(loadFullCategories());
-    dispatch(loadProductsPage(1,4));
+    dispatch(loadProductsPage(1,6));
   })
 
 
@@ -20,6 +21,7 @@ function App() {
       <BrowserRouter>
           <header>
               <AppNavbar />
+
           </header>
         <AppRouter />
       </BrowserRouter>

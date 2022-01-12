@@ -1,9 +1,9 @@
 import {
     CATEGORIES_LOAD_FULL,
     CREATE_CATEGORY,
-    CREATE_COLLECTION,
+    CREATE_COLLECTION, CREATE_IMAGES, CREATE_PRODUCT,
     DELETE_CATEGORY,
-    DELETE_COLLECTION,
+    DELETE_COLLECTION, DELETE_IMAGES, DELETE_PRODUCT, LOAD_IMAGES,
     MODIFY_CART,
     REMOVE_CART,
     SET_ACTIVE_PRODUCT,
@@ -12,7 +12,7 @@ import {
     SET_PRODUCTS_PAGE,
     SET_STATUS_ORDER,
     setProductsPage, UPDATE_CATEGORY,
-    UPDATE_COLLECTION,
+    UPDATE_COLLECTION, UPDATE_PRODUCT,
     USER_SIGNIN
 } from "./action";
 
@@ -38,6 +38,41 @@ export const reducerProducts = (state = {}, action) => {
             return {
                 ...state,
                 adminProducts:action.payload
+            }
+        case UPDATE_PRODUCT:
+            const products=state.products.filter(product=>product.id!=action.payload.id);
+            const adminProducts=state.adminProducts.filter(product=>product.id!=action.payload.id);
+            return {
+                ...state,
+                products:[
+                    ...products,
+                    action.payload
+                ],
+                adminProducts:[
+                    ...adminProducts,
+                    action.payload
+                ]
+            }
+        case CREATE_PRODUCT:
+            return {
+                ...state,
+                products:[
+                    ...state.products,
+                    action.payload
+                ],
+                adminProducts:[
+                    ...state.adminProducts,
+                    action.payload
+                ]
+            }
+        case DELETE_PRODUCT:
+            const removeProducts=state.products.filter(product=>product.id!=action.payload);
+            const removeAdmProducts=state.adminProducts.filter(product=>product.id!=action.payload);
+            console.log(removeProducts);
+            return {
+                ...state,
+                products:removeProducts,
+                adminProducts:removeAdmProducts
             }
         default:
             return state
@@ -158,6 +193,21 @@ export const reducerOrder = (state={},action)=>{
                     ...oldOrders,newOrder
                 ]
             }
+        default:
+            return state
+    }
+}
+
+export const reducerImages = (state=[],action)=>{
+    switch (action.type){
+        case LOAD_IMAGES:
+            return action.payload;
+        case CREATE_IMAGES:return [
+            ...state,
+            action.payload
+        ];
+        case DELETE_IMAGES:
+            return state.filter(image=>image.id!==action.payload);
         default:
             return state
     }

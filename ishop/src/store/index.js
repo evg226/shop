@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import {
         reducerActiveProduct,
         reducerCart,
-        reducerCategories,
+        reducerCategories, reducerImages,
         reducerOrder,
         reducerProducts,
         reducerUser
@@ -18,7 +18,8 @@ export const store = createStore(
         activeProduct:reducerActiveProduct,
         categories:reducerCategories,
         cart:reducerCart,
-        order:reducerOrder
+        order:reducerOrder,
+        images:reducerImages
     }),
     composeEnhancers(applyMiddleware(thunk))
 )

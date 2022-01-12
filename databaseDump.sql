@@ -34,7 +34,7 @@ CREATE TABLE `cart` (
   KEY `userId` (`userId`),
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +60,7 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`id`),
   KEY `fk_collection_id` (`collection_id`),
   CONSTRAINT `fk_collection_id` FOREIGN KEY (`collection_id`) REFERENCES `collections` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `collections` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +137,7 @@ CREATE TABLE `images` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +146,7 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
-INSERT INTO `images` VALUES (1,'../../static/020211222041220.jpg',1),(2,'../../static/120211222041220.jpg',1);
+INSERT INTO `images` VALUES (3,'020211222041220.jpg',1),(4,'120211222041220.jpg',1),(5,'020211222041220.jpg',2),(6,'120211222041220.jpg',2),(7,'020211222041220.jpg',3),(17,'20220112093626.jpg',10),(19,'20220112093932.jpg',5),(21,'20220112094713.jpg',5),(24,'20220112095801.jpg',2);
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +173,7 @@ CREATE TABLE `orders` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,6 +182,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,'2022-01-02 16:57:59',4,2,99,1,'','cancelled','',''),(2,'2022-01-02 16:57:59',2,2,40,2,'','cancelled','blue','XXL'),(4,'2022-01-02 17:31:05',4,2,99,2,'','cancelled','',''),(5,'2022-01-02 17:31:05',3,2,99,3,'','completed','',''),(6,'2022-01-02 17:31:05',1,2,40,2,'','created','',''),(7,'2022-01-12 11:13:52',2,1,40,1,'','sent','','');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +203,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +212,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Van clief super','fdfd dfd dfdf ',40,'20211222040631.jpg',1),(2,'John dow life','fdfd dfd dfdf  dfdf',40,NULL,1),(3,'ikebery shut','fdfd dfd dfdf  dfdf',99,NULL,1),(4,'Marta stewart ultra','fdfd dfd dfdf  dfdf',99,NULL,2),(5,'Ann donny true','fdfd dfd dfdf  dfdf',108,NULL,6),(6,'Suzan Berry life','fdfd dfd dfdf  dfdf',108,NULL,9),(7,'Miky little','fdfd dfd dfdf  dfdf',108,NULL,12),(9,'Miky little twio','fdfd dfd dfdf  dfdf',108,NULL,13),(10,'Holiday Ultra','fdfd dfd dfdf  dfdf',108,NULL,6);
+INSERT INTO `products` VALUES (1,'Van clief super','1fdfd dfd dfdf1',40,'20211222040631.jpg',13),(2,'John dow life','fdfd dfd dfdf  dfdf',40,'20211222040631.jpg',1),(3,'ikebery shut','fdfd dfd dfdf  dfdf',99,'20211222040631.jpg',1),(4,'Marta stewart ultra','fdfd dfd dfdf  dfdf',99,'20211222040631.jpg',2),(5,'Ann donny true','fdfd dfd dfdf  dfdf',108,'20211222040631.jpg',6),(6,'Suzan Berry life','fdfd dfd dfdf  dfdf',108,'20211222040631.jpg',9),(7,'Miky little','fdfd dfd dfdf  dfdf',108,'20211222040631.jpg',12),(10,'Holiday Ultra','fdfd dfd dfdf  dfdf',108,'20211222040631.jpg',6);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +241,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','Seller','Admin','c4ca4238a0b923820dcc509a6f75849b','ADMIN'),(2,'user','Bob','Marley','c4ca4238a0b923820dcc509a6f75849b','USER'),(5,'user2','Tom','Shiny','c81e728d9d4c2f636f067f89cc14862c','USER');
+INSERT INTO `users` VALUES (1,'admin','Seller','Admin','c4ca4238a0b923820dcc509a6f75849b','ADMIN'),(2,'user@user.ru','Bob','Marley','c4ca4238a0b923820dcc509a6f75849b','USER'),(5,'user2','Tom','Shiny','c81e728d9d4c2f636f067f89cc14862c','USER');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -253,4 +254,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-22 16:37:53
+-- Dump completed on 2022-01-12 11:18:26

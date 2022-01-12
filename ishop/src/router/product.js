@@ -35,7 +35,7 @@ export const  Product = () => {
                 <div className="product__picture">
                     <a onClick={()=>setActiveImage(prev=>prev==0?(images.length-1):(prev-1))} className="product__page">&lt;</a>
                     <div className="product__image">
-                        <img src={baseURL+"static/"+(!!images?images[activeImage].path:"default")} alt={product.name}/>
+                        <img src={baseURL+"static/"+(!!images&&images[activeImage]?images[activeImage].path:"default")} alt={product.name}/>
                     </div>
                     <a onClick={()=>setActiveImage(prev=>prev==(images.length-1)?0:(prev+1))} className="product__page">&gt;</a>
                 </div>

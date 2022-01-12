@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {getCategoriesFull, getProductsByCategory, getProductsPage} from "../store/selectors";
+import { getProductsByCategory } from "../store/selectors";
 import {
-    createCollectionDB,
+    createProductDB,
     deleteCategoryDB,
-    deleteCollectionDB, loadProductsByCategory,
-    updateCategoryDB,
-    updateCollectionDB
+    deleteCollectionDB, deleteProductDB, loadProductsByCategory,
+    updateProductDB
 } from "../store/action";
 import {staticFiles} from "../constants";
 import {SelectCategories} from "./selects";
+import {ModalImages} from "./images";
 
 export const AdmProducts=({categoryId})=> {
 
     const dispatch =useDispatch();
     useEffect(()=>{
-       dispatch(loadProductsByCategory(categoryId));
+        dispatch(loadProductsByCategory(categoryId));
     },[categoryId]);
 
     const products=useSelector(getProductsByCategory,shallowEqual);
     const [showModal,setShowModal]=useState(false);
-    const handleAdd=(name)=>{
-        name&&dispatch(createCollectionDB(name));
+    const handleAdd=(product)=>{
+        product && dispatch(createProductDB(product));
         setShowModal(false);
     }
     return (
@@ -35,7 +35,10 @@ export const AdmProducts=({categoryId})=> {
             {(!!products)&&(!!products.length)&&products.map(item=>
                 <Item key={item.id} item={item} />
             )}
-            {showModal && <Modal type="add" data={{name:""}} show={setShowModal} action={handleAdd}/>}
+            {showModal && <Modal type="add"
+                                 data={{name:"", description:"", price:"", image:"", category_id:categoryId}}
+                                 show={setShowModal}
+                                 action={handleAdd}/>}
         </div>
     );
 }
@@ -44,39 +47,36 @@ const Item=({item,collectionId})=>{
     const dispatch=useDispatch();
 
     const [showModal,setShowModal]=useState(false);
+    const [showImagesModal,setShowImagesModal]=useState(false);
 
     const handleDelete=()=>{
         if(window.confirm(`Do you what to delete ${item.name} from database?`)){
-            if(collectionId){
-                dispatch(deleteCategoryDB(item.id,collectionId));
-            }else {
-                dispatch(deleteCollectionDB(item.id));
-            }
+            dispatch(deleteProductDB(item.id));
         };
     }
-    const handleUpdate=(newName)=>{
-        if(collectionId){
-            dispatch(updateCategoryDB(item.id,newName,collectionId));
-        }else {
-            dispatch(updateCollectionDB(item.id, newName));
-        }
+    const handleUpdate=(product)=>{
+        dispatch(updateProductDB(product));
         setShowModal(false);
     }
+    const handleClickImages=()=>{
+        setShowImagesModal(!showImagesModal);
+    }
 
-     return (
+    return (
         <>
-            <div  className="adm__row adm__row_products adm__row_data" onClick={(e)=>e.target.id!=="adm__col_focused"&&setShowModal(true)}>
-                <div id="adm__col_focused" className="adm__col" >
-
-                </div>
+            <div  className="adm__row adm__row_products adm__row_data"
+                  onClick={(e)=>e.target.id!=="adm__col_focused"&&setShowModal(true)}>
+                <div id="adm__col_focused" className="adm__col"
+                    onClick={handleClickImages}>...</div>
                 <div className="adm__col adm">{item.id}</div>
                 <div className="adm__col">{item.name}</div>
                 <div className="adm__col">{item.price}</div>
+
                 <div id="adm__col_focused" className="adm__col" onClick={handleDelete}>X</div>
 
             </div>
-            {/*{showCategories&&<AdmCategories categories={item.categories} collectionId={item.id}/>}*/}
             {showModal && <Modal data={item} show={setShowModal} action={handleUpdate}/>}
+            {showImagesModal && <ModalImages data={item} show={setShowImagesModal} />}
         </>
     )
 }
@@ -86,9 +86,22 @@ const Modal=({data,show,action,type})=>{
     const [newName,setNewName]=useState(data.name);
     const [newDesc,setNewDesc]=useState(data.description);
     const [newPrice,setNewPrice]=useState(data.price);
-    const [newImage,setNewImage]=useState(staticFiles+data.image);
+    const [newImage,setNewImage]=useState(data.image);
+    const [mainImage,setMainImage]=useState("");
     const [newCategoryId,setNewCategoryId]=useState(data.category_id);
-    const collections=useSelector(getCategoriesFull);
+    const handleSend=()=>{
+        const product={
+            id:data.id,
+            name:newName,
+            description:newDesc,
+            price:newPrice,
+            image:newImage,
+            categoryId:newCategoryId,
+            mainImage
+        }
+        action(product);
+
+    }
 
     return (
         <div id="adm__back" onClick={(e)=>e.target.id==="adm__back"&&show(false)}>
@@ -103,14 +116,14 @@ const Modal=({data,show,action,type})=>{
                     <input value={newPrice} onChange={(e)=>setNewPrice(e.target.value)}/>
                     <p>New category:</p>
                     {/*<input value={newCategoryId} onChange={(e)=>setNewCategoryId(e.target.value)}/>*/}
-                    <SelectCategories theme={"adm__modal_products"} setCategory={setNewCategoryId} />
+                    <SelectCategories theme={"adm__modal_products"} value1={newCategoryId} setCategory={setNewCategoryId} />
 
                     <p>New base image:</p>
-                    <input type="file"  onChange={(e)=>setNewImage(e.target.value)}/>
-                    <img src={newImage} alt={newImage} />
+                    <input type="file" onChange={(e)=>setMainImage(e.target.files[0])} />
+                    <img src={staticFiles+newImage} alt={newImage} />
                 </div>
                 <div className="adm__modal_buttons">
-                    <div onClick={(e)=>action(newName)}>{type==="add"?"Create":"Update"}</div>
+                    <div onClick={handleSend}>{type==="add"?"Create":"Update"}</div>
                     <div onClick={()=>show(false)}>Cancel</div>
                 </div>
             </div>

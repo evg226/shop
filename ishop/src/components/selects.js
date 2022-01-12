@@ -31,11 +31,11 @@ export const Select=({name,theme,value,onChange})=>{
     )
 }
 
-export const SelectCategories=({theme,setCategory})=>{
+export const SelectCategories=({theme,value1,setCategory})=>{
     const collections=useSelector(getCategoriesFull,shallowEqual);
-    const [value,setValue]=useState("");
+    // const [value,setValue]=useState("");
     return (
-        <select className={theme} value={value} onChange={(e)=>setCategory(e.target.value)}>
+        <select className={theme} value={value1} onChange={(e)=>setCategory(e.target.value)}>
             {(!!collections)&&collections.map(collection=>
                 (!!collection)&&collection.categories.map(category=>
                     <option key={category.id} value={category.id}>{collection.name+": "+category.name}</option>

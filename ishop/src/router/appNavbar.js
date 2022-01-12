@@ -1,22 +1,31 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router';
+import {useLocation, useNavigate} from 'react-router';
 
 
 import {DESK_ROUTE,CART_DESK,USER_ROUTE,PRODUCT_ROUTE} from "../constants";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {getCart, getCategoriesFull} from "../store/selectors";
+import {getCart, getCategoriesFull, getProductsPage} from "../store/selectors";
 import {loadProductsPage} from "../store/action";
+import Banner from "../components/banner";
 
 export const AppNavbar = () => {
     // const isAuthed = true;
     const navigate = useNavigate();
 
+    const productsPage=useSelector (getProductsPage,shallowEqual);
+    const limit=productsPage.limit;
+
     const cartQuantity=useSelector(getCart,shallowEqual).quantity;
 
     const collectionsNav=useSelector(getCategoriesFull,shallowEqual);
     const dispatch=useDispatch();
+    const location=useLocation();
+    const handleClickItem=(filter)=>{
 
-
+        setHamb(false);
+        dispatch(loadProductsPage(1,limit,filter.collectionId,filter.categoryId));
+        navigate(PRODUCT_ROUTE);
+    }
 
     const handleClickSignin = () => {
         // if (!isAuthed) {
@@ -31,14 +40,10 @@ export const AppNavbar = () => {
         setHamb(!hamb);
     }
 
-    const handleClickItem=(filter)=>{
 
-        setHamb(false);
-        dispatch(loadProductsPage(1,4,filter.collectionId,filter.categoryId));
-        navigate(PRODUCT_ROUTE);
-    }
 
     return (
+        <>
         <nav className="navbar">
             <ul   className={"subnav " + (hamb ? "open" : "")} id='nav'>
                 <li className="subnav__item">
@@ -90,5 +95,8 @@ export const AppNavbar = () => {
                 </div>
             </div>
         </nav>
+
+            {(location.pathname===DESK_ROUTE)&&<Banner />}
+        </>
     );
 }

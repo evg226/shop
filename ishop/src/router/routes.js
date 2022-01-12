@@ -24,11 +24,8 @@ export const authRoutes = [
     {
         path: USER_ROUTE,
         Component: <User />
-    },
-    {
-        path: USER_ROUTE+"/:action",
-        Component: <User  />
-    },
+    }
+
 ];
 
 export const publicRoutes = [
@@ -43,5 +40,9 @@ export const publicRoutes = [
     {
         path: PRODUCT_ROUTE+"/:id",
         Component:<Product />
-    }
+    },
+    {
+        path: USER_ROUTE+"/:action",
+        Component: <User  />
+    },
 ];
