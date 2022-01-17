@@ -1,0 +1,14 @@
+.buttons {
+    display: flex;
+    margin: 0;
+}
+
+.signup_join{
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+.signup1{
+    padding: 10px 20px;
+}

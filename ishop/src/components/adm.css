@@ -1,0 +1,194 @@
+.adm__inner_table{
+    margin-left: 20px;
+    color:#6f6e6e;
+}
+.adm__row {
+    display: grid;
+    grid-template-columns: 20px 50px auto 20px;
+    grid-auto-columns: auto;
+    grid-auto-rows: 25px;
+    border: 1px solid #9f9f9f ;
+    margin-bottom: -1px;
+    cursor: pointer;
+}
+
+.adm__row_products {
+    grid-template-columns: 20px 50px auto 60px 20px ;
+}
+.adm__row_data:hover{
+    background: #e3e2e2;
+}
+
+.adm__col{
+    border-right: 1px solid #9f9f9f ;
+    height: 100%;
+    margin-right: -1px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.adm__caption{
+    background: #606060;
+    cursor: default;
+    color: #ffffff;
+}
+
+#adm__col_focused:hover{
+    background: #222222;
+    color: #ffffff;
+}
+
+#adm__back {
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1);
+}
+.adm__modal {
+    max-width: 400px;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    display: block;
+    min-width: 200px;
+    min-height: 150px;
+    border:1px solid  #ddd;
+    background: #ffffff;
+    transform: translate(-50%, -50%)
+}
+
+.adm__modal_products img {
+    width: 100%;
+    padding: 20px
+}
+
+.adm__modal_products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.adm__modal h3{
+    text-align: center;
+    padding: 10px 0 ;
+    background: #6f6e6e;
+    color: #ffffff;
+}
+.adm__modal p {
+    margin: 10px;
+}
+.adm__modal input,select {
+    margin: 0 10px;
+}
+.adm__modal_buttons{
+    display: flex;
+    padding: 20px 5px ;
+}
+
+.adm__modal_buttons div,
+.adm__addnew{
+    flex:1 ;
+    text-align: center;
+    margin: 0 5px;
+    padding: 5px 0 ;
+    cursor: pointer;
+    background: #6f6e6e;
+    color: #ffffff;
+    border:1px solid  #6f6e6e;
+}
+
+.adm__addnew{
+    /*!*flex:0 0 100px;*!*/
+    /*text-align: center;*/
+    /*margin: 20px;*/
+    /*padding: 7px 25px;*/
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+}
+.adm__addnew:hover{
+    transform: scale(1.5);
+    background: #222222;
+}
+
+.adm__modal_buttons div:hover
+{
+    color: #6f6e6e;
+    background: #ffffff;
+}
+
+.adm__modal_products input,select,textarea  {
+    width:60%;
+    padding: 5px 10px ;
+    margin: 5px 10px;
+    background: inherit;
+    border: 1px solid #9f9f9f;
+    font-size: 14px;
+    text-transform: none;
+    color: #6f6e6e;
+}
+
+.adm__modal_products p{
+    font-size: 15px;
+    text-transform: none;
+    color: #6f6e6e;
+}
+
+.adm__modal_images{
+    width: 700px;
+    max-width: 90%;
+
+
+}
+.adm__container_images {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 10px 0;
+    flex-wrap: wrap;
+}
+.adm__image{
+    width: 30%;
+    min-width: 200px;
+    cursor: pointer;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:1px solid #9f9f9f;
+}
+.adm__image:hover{
+    box-shadow: 0 0 30px #222222;
+}
+.adm__image img {
+    width: 100%;
+}
+
+.adm__image_add {
+    /*padding:20px;*/
+}
+
+.adm__image_add input {
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    opacity:0;
+}
+.adm__image_add span {
+    position: absolute;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+
+.adm__image_selected{
+    box-shadow: 0 0 20px #222222;
+}

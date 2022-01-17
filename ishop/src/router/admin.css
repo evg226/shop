@@ -1,0 +1,31 @@
+.admin__caption {
+    font-weight: 600;
+    font-size: 24px;
+    margin: 20px 0;
+    text-align: center;
+    color: #595959;
+}
+.admin__actions{
+    display: flex;
+    flex-wrap: wrap;
+    /*padding:0 -30px;*/
+    color:#636363;
+}
+
+.admin__action{
+    padding: 10px 30px;
+    cursor: pointer;
+}
+
+.admin__action:hover{
+    background: #e5e5e5;
+}
+
+.admin__action_selected{
+    background: #ecebeb;
+}
+
+.admin__container{
+    margin: 20px 0;
+}
+
