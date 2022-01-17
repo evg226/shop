@@ -3,7 +3,7 @@ import {
     CREATE_CATEGORY,
     CREATE_COLLECTION, CREATE_IMAGES, CREATE_PRODUCT,
     DELETE_CATEGORY,
-    DELETE_COLLECTION, DELETE_IMAGES, DELETE_PRODUCT, LOAD_IMAGES,
+    DELETE_COLLECTION, DELETE_IMAGES, DELETE_PRODUCT, LAZY_ADD_PRODUCTS_PAGE, LOAD_IMAGES, LOADING_SET,
     MODIFY_CART,
     REMOVE_CART,
     SET_ACTIVE_PRODUCT,
@@ -19,9 +19,26 @@ import {
 export const reducerUser = (state = {}, action) => {
     switch (action.type) {
         case USER_SIGNIN:
-         return action.payload
+            return action.payload
         default:
             return state
+    }
+};
+
+export const reducerLoading = (state = {entity:"",isLoading:false}, action) => {
+    switch (action.type) {
+        case LOADING_SET:
+            console.log(action.payload);
+            return {
+                entity:action.payload,
+                isLoading:true
+            }
+        default:
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess:action.payload
+            }
     }
 };
 
@@ -29,6 +46,15 @@ export const reducerProducts = (state = {}, action) => {
     switch (action.type) {
         case SET_PRODUCTS_PAGE:
             return action.payload;
+        case LAZY_ADD_PRODUCTS_PAGE:
+            return {
+                ...state,
+                page:action.payload.page,
+                products:[
+                    ...state.products,
+                    ...action.payload.products
+                ]
+            }
         case SET_ACTIVE_PRODUCT:
             return {
                 ...state,

@@ -42,46 +42,83 @@ if( isset($_GET['categoryId'])&&$_GET['cat']==1) {
      echo json_encode($product);
 }else {
 //    echo "Запрос всех продуктов";
-    $page=isset($_GET['page'])?(int)htmlspecialchars(strip_tags($_GET['page'])):1;
-    $limit=isset($_GET['limit'])?(int)htmlspecialchars(strip_tags($_GET['limit'])):4;
-    $categoryId=(int)htmlspecialchars(strip_tags($_GET['categoryId']));
-    $collectionId=(int)htmlspecialchars(strip_tags($_GET['collectionId']));
-
-    $startRecord=($page-1)*$limit;
-    $query="SELECT products.*,categories.collection_id FROM products
+    $page=(int)htmlspecialchars(strip_tags($_GET['page']));
+    $categoryId = (int)htmlspecialchars(strip_tags($_GET['categoryId']));
+    $collectionId = (int)htmlspecialchars(strip_tags($_GET['collectionId']));
+    $limit = isset($_GET['limit']) ? (int)htmlspecialchars(strip_tags($_GET['limit'])) : 9;
+    if ($page) {
+        $startRecord = ($page - 1) * $limit;
+        $query = "SELECT products.*,categories.collection_id FROM products
         INNER JOIN categories
             ON products.category_id=categories.id";
-    $queryEnd="";
-    if ($collectionId!=0) {
-        $queryEnd.=" WHERE collection_id=$collectionId";
-    }else if ($categoryId!=0) {
-        $queryEnd.=" WHERE category_id=$categoryId";
-    }
-    $result = mysqli_query($connection, $query.$queryEnd." LIMIT $startRecord,$limit");
-    if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
-    $products=[];
-    while($data = mysqli_fetch_assoc($result)){
-        array_push($products,$data);
-    }
+        $queryEnd = "";
+        if ($collectionId != 0) {
+            $queryEnd .= " WHERE collection_id=$collectionId";
+        } else if ($categoryId != 0) {
+            $queryEnd .= " WHERE category_id=$categoryId";
+        }
+        $result = mysqli_query($connection, $query . $queryEnd . " LIMIT $startRecord,$limit");
+        if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
+        $products = [];
+        while ($data = mysqli_fetch_assoc($result)) {
+            array_push($products, $data);
+        }
 
-    $query="SELECT count(products.id) as count FROM products
-        INNER JOIN categories ON products.category_id=categories.id".$queryEnd;
-    $result = mysqli_query($connection, $query);
-    if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
-    $data = mysqli_fetch_assoc($result);
-    $response=[
-            "count"=>(int)$data["count"],
-            "page"=>$page,
-            "limit"=>$limit,
-            "products"=>$products
+        $query = "SELECT count(products.id) as count FROM products
+        INNER JOIN categories ON products.category_id=categories.id" . $queryEnd;
+        $result = mysqli_query($connection, $query);
+        if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
+        $data = mysqli_fetch_assoc($result);
+        $response = [
+            "count" => (int)$data["count"],
+            "page" => $page,
+            "limit" => $limit,
+            "products" => $products
         ];
-    if ($collectionId!=0) {
-        $response["collectionId"]=$collectionId;
-    }else if ($categoryId!=0) {
-        $response["categoryId"]=$categoryId;
+        if ($collectionId != 0) {
+            $response["collectionId"] = $collectionId;
+        } else if ($categoryId != 0) {
+            $response["categoryId"] = $categoryId;
+        }
+        echo json_encode($response);
+
+    } else {
+        $last=(string)htmlspecialchars(strip_tags($_GET['last']));
+
+        $fieldSort=(string)htmlspecialchars(strip_tags($_GET['fieldSort']));
+
+        $query = "SELECT products.id,
+                         products.name as 'products.name',
+                         price,
+                         collection_id,   
+                         category_id,   
+                         categories.name as 'categories.name',   
+                        categories.collection_id FROM products
+                    INNER JOIN categories
+                        ON products.category_id=categories.id ";
+        if ($fieldSort&&$last) {
+            $query.= "WHERE ".$fieldSort." > '$last'";
+        } else {
+            $query .= "WHERE products.id > " . ($last ? $last : "1");
+        }
+
+        if ($collectionId != 0) {
+            $queryFilter = " AND collection_id=$collectionId";
+        } else if ($categoryId != 0) {
+            $queryFilter = " AND category_id=$categoryId";
+        };
+        if($fieldSort) $querySort=" ORDER BY $fieldSort";
+        $query.=$queryFilter.$querySort." LIMIT $limit";
+//        die($query);
+        $result = mysqli_query($connection, $query);
+        if (mysqli_error($connection)) die (sendError(mysqli_error($connection)));
+        $products=mysqli_fetch_all($result,MYSQLI_ASSOC);
+
+        echo  json_encode( [
+            "fieldSort"=> $fieldSort,
+            "last" => $products[$limit-1][$fieldSort],
+            "limit" => $limit,
+            "products" => $products
+        ]);
     }
-    echo json_encode($response);
-
-
-
 }

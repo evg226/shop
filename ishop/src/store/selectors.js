@@ -10,6 +10,7 @@
 // export const getTotalCount = (state) => state.projects.totalCount;
 // export const getBasket=state=>state.basket;
 
+export const getLoadingState=state=>state.loading;
 export const getCategoriesFull=state=>state.categories;
 export const getProductsPage=state=>state.productsPage;
 export const getProductsByCategory=state=>state.productsPage.adminProducts;

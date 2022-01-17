@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, { useEffect} from 'react'
 import {shallowEqual, useDispatch,useSelector} from "react-redux";
-import {addCartDB,loadProductsPage} from "../store/action";
-import {getProductsPage} from "../store/selectors";
+import {addCartDB, LazyAddProductsPageDB, loadProductsPage} from "../store/action";
+import {getLoadingState, getProductsPage} from "../store/selectors";
 import {baseURL} from "../constants";
-import {useNavigate, useParams} from "react-router";
+import {useNavigate } from "react-router";
 import {PRODUCT_ROUTE} from "../constants";
 
 export const  Catalog = () => {
@@ -27,6 +27,22 @@ export const  Catalog = () => {
         }
         dispatch(loadProductsPage(current,limit,productsPage.collectionId,productsPage.categoryId));
     }
+
+    const loadingState=useSelector(getLoadingState,shallowEqual);
+    const handleSeeMore =(e)=>{
+        if ((e.target.documentElement.scrollHeight-(e.target.documentElement.scrollTop+window.innerHeight))===0){
+            !loadingState.isLoading &&
+            dispatch(LazyAddProductsPageDB(productsPage.collectionId,productsPage.categoryId));
+        }
+
+
+    }
+
+
+    useEffect(()=>{
+        document.addEventListener("scroll",handleSeeMore)
+        return ()=> document.removeEventListener("scroll",handleSeeMore);
+    },[]);
 
     return (
         <main>
@@ -141,6 +157,10 @@ export const  Catalog = () => {
 
                     <div className="pages">
                         <div className="pages__content">
+                            <a className={"pages__link pages__link_active"}
+                               onClick={()=>dispatch(LazyAddProductsPageDB(productsPage.collectionId,productsPage.categoryId))}>
+                                See more...
+                            </a>
                             <a onClick={()=>handleChangePage(activePage-1)} className="pages__link pages__link_browse">&lt;</a>
                             {pagesCount&&pages.map(item=>
                                 <a key={item} className={"pages__link"+(activePage===item?" pages__link_active":"")}

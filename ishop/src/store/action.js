@@ -17,6 +17,20 @@ import {createCart, deleteCart, fetchCart, updateCart} from "../http/cartApi";
 import {cancelOrderById, createOrder, fetchOrder} from "../http/ordersApi";
 import {createImageQuery, deleteImageQuery, fetchImagQuery} from "../http/imagesAPI";
 
+export const LOADING_SET="LOADING::SET";
+export const LOADING_UNSET="LOADING::UNSET";
+export const setLoading=(entity)=>{
+    return {
+        type:LOADING_SET,
+        payload: entity
+    }
+}
+export const unSetLoading=(isSuccess)=>{
+    return {
+        type:LOADING_UNSET,
+        payload: isSuccess
+    }
+}
 
 export const CATEGORIES_LOAD_FULL="CATEGORIES::LOAD_FULL";
 
@@ -162,6 +176,34 @@ export const loadProductsPage=(page,limit,collectionId,categoryId)=>async dispat
         console.log(e.response.data);
     }
 }
+
+export const LAZY_ADD_PRODUCTS_PAGE="PRODUCTS::LAZY_ADD_PAGE";
+
+export const lazyAddProductsPage=(productsPage)=>{
+    return {
+        type:LAZY_ADD_PRODUCTS_PAGE,
+        payload:productsPage
+    }
+}
+
+export const LazyAddProductsPageDB=(collectionId,categoryId)=>async (dispatch,getState) =>{
+    try {
+        dispatch(setLoading("productPage"));
+        const state=getState();
+        const currentProductsPage=state.productsPage;
+        const {page,limit,count}=currentProductsPage;
+        if (count>page*limit) {
+            const productsPage = await fetchProductsPage(page + 1, limit, collectionId, categoryId);
+            productsPage.products.length && dispatch(lazyAddProductsPage(productsPage));
+            dispatch(unSetLoading(true));
+        }
+    } catch (e) {
+        dispatch(unSetLoading(false));
+        console.log(e.message);
+        console.log(e.response.data);
+    }
+}
+
 
 export const SET_PRODUCTS_BY_CATEGORY="PRODUCTS::SET_BY_CATEGORY";
 
